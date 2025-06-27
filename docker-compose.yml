@@ -3,8 +3,6 @@ version: '3.8'
 services:
   traefik:
     image: "traefik:v2.10"
-    container_name: "traefik"
-    restart: unless-stopped
     command:
       - "--api.dashboard=true"
       - "--providers.docker=true"
@@ -12,26 +10,28 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=exp.softh@gmail.com" # IMPORTANTE: Troque pelo seu email
+      - "--certificatesresolvers.myresolver.acme.email=exp.softh@gmail.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-      # Redirecionamento de HTTP para HTTPS
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
     ports:
       - "80:80"
       - "443:443"
-      # A porta 8080 expõe o Dashboard do Traefik. Não exponha em produção sem segurança.
       - "8080:8080"
     volumes:
-      - "./letsencrypt:/letsencrypt"
+      - "letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
       - imobia-net
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
 
   helena-app:
     image: raphaelrsantos/imobia:latest
-    container_name: imobia_app
-    restart: unless-stopped
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     networks:
@@ -45,7 +45,14 @@ services:
       # Etiqueta para o dashboard do Traefik (opcional, mas útil)
       - "traefik.http.routers.dashboard.rule=Host(`traefik.imobia.chat`)"
       - "traefik.http.routers.dashboard.service=api@internal"
+    deploy:
+      restart_policy:
+        condition: on-failure
 
 networks:
   imobia-net:
-    driver: bridge
+    driver: overlay
+    attachable: true
+
+volumes:
+  letsencrypt:
