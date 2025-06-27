@@ -1,31 +1,51 @@
 version: '3.8'
 
-networks:
-  imobia-net:
-    driver: bridge
-
 services:
+  traefik:
+    image: "traefik:v2.10"
+    container_name: "traefik"
+    restart: unless-stopped
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=exp.softh@gmail.com" # IMPORTANTE: Troque pelo seu email
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      # Redirecionamento de HTTP para HTTPS
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+    ports:
+      - "80:80"
+      - "443:443"
+      # A porta 8080 expõe o Dashboard do Traefik. Não exponha em produção sem segurança.
+      - "8080:8080"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - imobia-net
+
   helena-app:
     image: raphaelrsantos/imobia:latest
+    container_name: imobia_app
     restart: unless-stopped
     environment:
-      # A variável OPENAI_API_KEY será injetada pelo Portainer ou por um arquivo .env
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     networks:
       - imobia-net
-    # A porta 8501 não precisa mais ser exposta diretamente,
-    # o Nginx Proxy Manager cuidará do acesso.
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.imobia.rule=Host(`imobia.chat`)"
+      - "traefik.http.routers.imobia.entrypoints=websecure"
+      - "traefik.http.routers.imobia.tls.certresolver=myresolver"
+      - "traefik.http.services.imobia.loadbalancer.server.port=8501"
+      # Etiqueta para o dashboard do Traefik (opcional, mas útil)
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.imobia.chat`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
 
-  npm:
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
-    ports:
-      # Portas que serão abertas na sua VPS:
-      - '80:80'   # Porta Pública HTTP
-      - '443:443' # Porta Pública HTTPS
-      - '81:81'   # Interface de Admin do Nginx Proxy Manager
-    volumes:
-      - ./npm-data:/data
-      - ./npm-letsencrypt:/etc/letsencrypt
-    networks:
-      - imobia-net
+networks:
+  imobia-net:
+    driver: bridge
