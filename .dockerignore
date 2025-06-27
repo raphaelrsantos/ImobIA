@@ -1,0 +1,18 @@
+# Ignorar o ambiente virtual
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Arquivos de ambiente local (serão gerenciados pelo Portainer)
+.env 

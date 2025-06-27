@@ -1,0 +1,38 @@
+# BASE DE CONHECIMENTO DA CARDOSO IMÓVEIS
+
+## VAGAS DE EMPREGO
+[CIDADE: Todas]
+[ASSUNTO: Vagas de Emprego]
+[CARGO: Analista de Marketing Digital]
+[REQUISITOS: 5 anos de experiência na área, conhecimento em SEO e Google Ads.]
+[CONTATO: Envie seu currículo para rh@cardosoimoveis.com com o assunto "Vaga Marketing"]
+- Engenheiro Civil: No momento, não temos vagas abertas para engenheiro civil. Nosso banco de talentos está fechado e não estamos recebendo currículos.
+- Desenvolvedor Python: Vaga aberta para trabalho remoto. Foco em desenvolvimento de sistemas internos com Django. Enviar portfólio para rh@cardosoimoveis.com.
+
+## FINANCEIRO (BOLETOS)
+[CIDADE: Todas]
+[ASSUNTO: Financeiro]
+[TEMA: Segunda via de boleto]
+[INSTRUÇÃO: Para emitir a segunda via do seu boleto, acesse nosso portal do cliente em cardosoimoveis.com/cliente e informe seu CPF.]
+- Juros por atraso: A taxa de juros para pagamentos em atraso é de 2% ao mês, mais multa de 1% sobre o valor principal. Não há negociação para juros.
+
+## IMÓVEIS (EMPREENDIMENTOS)
+[CIDADE: Goiânia]
+[ASSUNTO: Imóveis]
+[LISTA_EMPREENDIMENTOS:
+    - [NOME: Residencial Belleville]
+      [TIPO: Apartamentos]
+      [DETALHES: Unidades de 2 e 3 quartos, com suíte e varanda gourmet.]
+      [PREÇO: A consultar]
+      [CONTATO: Fale com um corretor pelo telefone (62) 3222-1111]
+]
+
+[CIDADE: Rio Verde]
+[ASSUNTO: Imóveis]
+[LISTA_EMPREENDIMENTOS:
+    - [NOME: Jardins da Colina]
+      [TIPO: Lotes residenciais]
+      [DETALHES: Lotes a partir de 360m² em condomínio fechado com segurança 24h. Últimas unidades disponíveis.]
+      [PREÇO: A consultar]
+      [CONTATO: Fale com um corretor pelo telefone (64) 3333-4444]
+] 

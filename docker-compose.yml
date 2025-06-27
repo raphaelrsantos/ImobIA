@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  helena-app:
+    build: .
+    container_name: helena_app_container
+    restart: always
+    ports:
+      - "8501:8501"
+    environment:
+      # A variável OPENAI_API_KEY será injetada pelo Portainer ou por um arquivo .env
+      - OPENAI_API_KEY=${OPENAI_API_KEY} 
