@@ -1,6 +1,7 @@
-# ImobIA - Assistente Virtual da Cardoso Imóveis
+# ImobIA - Sua imobiliária inteligente
 
-ImobIA é um assistente virtual inteligente projetado para o atendimento ao cliente da imobiliária Cardoso Imóveis. Construído com Python, Streamlit e o framework de agentes CrewAI, ele é capaz de entender, rotear e responder a uma variedade de solicitações de clientes, desde informações sobre imóveis até questões de RH e financeiras.
+ImobIA é uma solução de multi-agentes de IA para o ramo imobiliário. 
+Construído com Python, Streamlit e o framework de agentes CrewAI, ele é capaz de entender, rotear e responder a uma variedade de solicitações de clientes, desde informações sobre imóveis até questões de RH e financeiras.
 
 ## Visão Geral da Arquitetura
 
