@@ -1,10 +1,31 @@
 version: '3.8'
 
+networks:
+  imobia-net:
+    driver: bridge
+
 services:
   helena-app:
     image: raphaelrsantos/imobia:latest
-    ports:
-      - "8501:8501"
+    restart: unless-stopped
     environment:
       # A variável OPENAI_API_KEY será injetada pelo Portainer ou por um arquivo .env
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+    networks:
+      - imobia-net
+    # A porta 8501 não precisa mais ser exposta diretamente,
+    # o Nginx Proxy Manager cuidará do acesso.
+
+  npm:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      # Portas que serão abertas na sua VPS:
+      - '80:80'   # Porta Pública HTTP
+      - '443:443' # Porta Pública HTTPS
+      - '81:81'   # Interface de Admin do Nginx Proxy Manager
+    volumes:
+      - ./npm-data:/data
+      - ./npm-letsencrypt:/etc/letsencrypt
+    networks:
+      - imobia-net
