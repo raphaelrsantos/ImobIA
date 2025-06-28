@@ -5,7 +5,7 @@ Construído com Python, Streamlit e o framework de agentes CrewAI, ele é capaz 
 
 ## Visão Geral da Arquitetura
 
-O sistema é projetado em uma arquitetura modular que separa a interface, a lógica de negócios e a base de conhecimento. A interação flui desde a interface do usuário no Streamlit, passa por um orquestrador central (`helena_main.py`) que gerencia o estado da conversa, e utiliza uma equipe de agentes de IA (CrewAI) para realizar tarefas específicas.
+O sistema é projetado em uma arquitetura modular que separa a interface, a lógica de negócios e a base de conhecimento. A interação flui desde a interface do usuário no Streamlit, passa por um orquestrador central (`bia_main.py`) que gerencia o estado da conversa, e utiliza uma equipe de agentes de IA (CrewAI) para realizar tarefas específicas.
 
 ```mermaid
 graph TD
@@ -18,7 +18,7 @@ graph TD
     end
 
     subgraph "Orquestrador Lógico (Python)"
-        C(helena_main.py)
+        C(bia_main.py)
     end
     
     subgraph "Framework de Agentes (CrewAI)"
@@ -70,7 +70,7 @@ graph TD
 ├── .dockerignore           # Arquivos a serem ignorados pelo Docker
 ├── Dockerfile              # Receita para construir a imagem Docker da aplicação
 ├── docker-compose.yml      # Arquivo de orquestração para rodar o container
-├── helena_main.py          # Coração da aplicação, orquestra os agentes e o fluxo
+├── bia_main.py          # Coração da aplicação, orquestra os agentes e o fluxo
 ├── knowledge_base.txt      # Base de dados em texto simples com as informações da empresa
 ├── pyproject.toml          # Arquivo de dependências e configuração do projeto (para 'uv')
 ├── requirements.txt        # Lista de dependências (para Docker/outros ambientes)
