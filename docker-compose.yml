@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  helena-app:
+  app:
     image: raphaelrsantos/imobia:latest
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
