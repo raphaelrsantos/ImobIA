@@ -1,58 +1,27 @@
 version: '3.8'
 
 services:
-  traefik:
-    image: "traefik:v2.10"
-    command:
-      - "--api.dashboard=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
-      - "--certificatesresolvers.myresolver.acme.email=exp.softh@gmail.com"
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
-      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
-    volumes:
-      - "letsencrypt:/letsencrypt"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    networks:
-      - imobia-net
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-      restart_policy:
-        condition: on-failure
-
   helena-app:
     image: raphaelrsantos/imobia:latest
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
     networks:
-      - imobia-net
+      - traefik-public
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=network_swarm_public"
       - "traefik.http.routers.imobia.rule=Host(`imobia.chat`)"
       - "traefik.http.routers.imobia.entrypoints=websecure"
       - "traefik.http.routers.imobia.tls.certresolver=myresolver"
       - "traefik.http.services.imobia.loadbalancer.server.port=8501"
-      # Etiqueta para o dashboard do Traefik (opcional, mas útil)
-      - "traefik.http.routers.dashboard.rule=Host(`traefik.imobia.chat`)"
-      - "traefik.http.routers.dashboard.service=api@internal"
     deploy:
       restart_policy:
         condition: on-failure
 
 networks:
-  imobia-net:
-    driver: overlay
-    attachable: true
+  traefik-public:
+    external: true
+    name: network_swarm_public
 
 volumes:
   letsencrypt:
