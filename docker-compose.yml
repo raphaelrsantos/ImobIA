@@ -8,12 +8,12 @@ services:
     networks:
       - traefik-public
     labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=network_swarm_public"
-      - "traefik.http.routers.imobia.rule=Host(`imobia.chat`)"
-      - "traefik.http.routers.imobia.entrypoints=websecure"
-      - "traefik.http.routers.imobia.tls.certresolver=letsencryptresolver"
-      - "traefik.http.services.imobia.loadbalancer.server.port=8501"
+      traefik.enable: "true"
+      traefik.docker.network: "network_swarm_public"
+      traefik.http.routers.imobia.rule: "Host(`imobia.chat`)"
+      traefik.http.routers.imobia.entrypoints: "websecure"
+      traefik.http.routers.imobia.tls.certresolver: "letsencryptresolver"
+      traefik.http.services.imobia.loadbalancer.server.port: "8501"
     deploy:
       restart_policy:
         condition: on-failure
@@ -22,6 +22,3 @@ networks:
   traefik-public:
     external: true
     name: network_swarm_public
-
-volumes:
-  letsencrypt:
